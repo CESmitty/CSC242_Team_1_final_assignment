@@ -1,0 +1,23 @@
+Get the keyword
+
+Remove duplicate letters
+
+Add the unused alphabet letters in reverse order
+
+Open the input file
+
+Open the output file
+
+For each character in the input file
+
+    If encrypting
+
+        Replace the letter using the cipher alphabet
+
+    Else if decrypting
+
+        Replace the letter using the normal alphabet
+
+    Write the character to the output file
+
+Close both files
