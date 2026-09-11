@@ -142,3 +142,77 @@ int main(int argc, char* argv[])
     // Return 0 because the program finished normally
     return 0;
 }
+
+void crypt_file(ifstream& in, ofstream& out, string cipher, bool decrypt )
+    { 
+    string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    // Reads the file character by character
+    char ch; // variable to hold each character as they're being read
+
+    // Reads one character from the input file and stores it in ch
+    while (in.get(ch)) // keeps looping until there are no more characters left to read
+    {
+        if (isalpha(ch)) // Checks if a character is a letter
+        {
+            // Converts to upper case for lookup
+            char upperCh = toupper(ch);
+
+            char newCh; // Will hold the encrypted/decrypted character
+
+            if (decrypt)
+            {
+                // Decrypt: finds letter in the cipher alphabet and replaces it with the normal alphabet 
+                int pos = cipher.find(upperCh); // Finds the letter in the cipher alphabet and gets its position
+                newCh = alphabet[pos]; // Finds the corresponding position and letter in the normal alphabet
+            }
+            else
+            {
+                // Encrypt: finds position of letter in normal alphabet and replaces it with cypher alphabet
+                int pos = alphabet.find(upperCh); // Finds letter in the normal alphabet and gets its position
+                newCh = cipher[pos]; // Finds corresponding position and letter in the cipher alphabet
+            }
+
+            if (islower(ch)) // Checks if the og character was lowercase
+            {
+                newCh = tolower(newCh); //converts the new character to lowercase
+            }
+
+            out << newCh; // Writes the new character to the output file
+        }
+        else
+        {
+            out << ch; // Writes the original character unchanged (for spaces,  numbers, punctuation)
+        }
+    }
+}
+
+
+string make_cipher(string keyword)
+{ 
+    string cipher = ""; // Creates an empty string that will hold the final cipher alphabet
+
+    // Adds unique letters from keywords
+    for (int i = 0; i < keyword.length(); i++) //Loops through each character in the keyword
+    {
+        char ch = toupper(keyword[i]); // Converts current character to uppercase
+        if (cipher.find(ch) == string::npos) // Searches cipher string for the character ch, returns the position if found or string::npos if not found
+        {
+            cipher = cipher + ch; // Adds the character to cipher string
+        }
+    }
+
+    // Will add the rest of the alphabet in reverse order
+    string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // Creates a string with all letters of the alphabet
+    for (int i = 25; i >= 0; i--) // Loops backwards from 25 (Z) to 0 (A)
+    {
+        char ch = alphabet[i]; // Gets character at position i in the alphabet
+        if (cipher.find(ch) == string::npos) // Checks if the character is not already in the cipher
+        {
+            cipher = cipher + ch; // Adds the character to the cipher string
+        }
+    }
+
+    //Return statement
+    return cipher;
+}
