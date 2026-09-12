@@ -1,15 +1,12 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <cctype>
+#include <iostream> // for cout and cin
+#include <fstream> // allows us to open, read and write files
+#include <string> // allows us to use string variables
+#include <cctype> //allows to check and change letters.
 
 using namespace std;
 
 
-// Function declarations
-// The full functions are written after main
 string make_cipher(string keyword);
-
 void crypt_file(
     ifstream& in,
     ofstream& out,
@@ -17,114 +14,68 @@ void crypt_file(
     bool decrypt
 );
 
-
-int main(int argc, char* argv[])
-{
-    // The program encrypts by default.
-    // This changes to true if the user enters -d
+int main()
+{      // starts the program in encryption mode
     bool decrypt = false;
-
-    // Stores the keyword entered after -k
-    string keyword = "";
-
-    // Counts how many filenames the user enters
-    int file_count = 0;
-
-    // Create streams for the input and output files
-    ifstream in_file;
-    ofstream out_file;
-
-
-    // Check each command-line argument.
-    // Start at 1 because argv[0] is the program name
-    for (int i = 1; i < argc; i++)
+    // holds the users choice
+    char choice;
+    //holds the keyword and file names
+    string keyword;
+    string input_name;
+    string output_name;
+    // ask user which operation they want to use
+    cout << "Enter E to encrypt or D to decrypt: ";
+    cin >> choice;
+    // change to decrypt is D is entered
+    if (choice == 'D' || choice == 'd')
     {
-        // Store the current argument in a string
-        string arg = argv[i];
-
-        // Check if the user wants to decrypt the file
-        if (arg == "-d")
-        {
-            decrypt = true;
-        }
-
-        // Check if the argument starts with -k
-        else if (arg.length() > 2
-            && arg.substr(0, 2) == "-k")
-        {
-            // Remove -k and store the remaining keyword
-            // Example: -kFEATHER becomes FEATHER
-            keyword = arg.substr(2);
-        }
-
-        // Anything else is treated as a filename
-        else
-        {
-            file_count++;
-
-            // The first filename is the input file
-            if (file_count == 1)
-            {
-                in_file.open(arg);
-
-                // Stop the program if the input file
-                // could not be opened
-                if (in_file.fail())
-                {
-                    cout << "could not open input file "
-                        << arg << endl;
-
-                    return 1;
-                }
-            }
-
-            // The second filename is the output file
-            else if (file_count == 2)
-            {
-                out_file.open(arg);
-
-                // Stop the program if the output file
-                // could not be opened or created
-                if (out_file.fail())
-                {
-                    cout << "Could not open output file "
-                        << arg << endl;
-
-                    return 1;
-                }
-            }
-        }
+        decrypt = true;
+    }    // stay in encryption mode if E is entered
+    else if (choice == 'E' || choice == 'e')
+    {
+        decrypt = false;
     }
+    else    // stop if neither E or D is entered
+    {  
+        cout << "Invalid selection." << endl;
+        return 1;
+    }
+    //Ask for the keyword
+    cout << "Enter the keyword: ";
+    cin >> keyword;
 
-
-    // Require the user to provide a keyword
     if (keyword.empty())
-    {
-        cout << "Keyword required" << endl;
-        cout << "Use -k followed by the keyword." << endl;
-
+    {    // stop if there is no keyword
+        cout << "Keyword required." << endl;
         return 1;
     }
+        // get the name of the files from user
+    cout << "Enter the input filename: ";
+    cin >> input_name;
+    // open original file
+    cout << "Enter the output filename: ";
+    cin >> output_name;
 
-
-    // The program needs two file names
-    // the input filename and the output filename
-    if (file_count != 2)
+    ifstream in_file(input_name);
+    // stop if file could not be opened
+    if (in_file.fail())
     {
-        cout << "Usage: " << argv[0]
-            << " [-d] -kKEYWORD infile outfile"
-            << endl;
-
+        cout << "Could not open input file "
+            << input_name << endl;
         return 1;
     }
+    //open or create the file that will hold the end result
+    ofstream out_file(output_name);
 
-
-    // Create the cipher alphabet using the keyword
+    if (out_file.fail())
+    {    // stop if output couldnt be created
+        cout << "Could not open output file "
+            << output_name << endl;
+        return 1;
+    }
+        // send files and cipher to the function that decrypts or encrypts
     string cipher = make_cipher(keyword);
 
-
-    // Send the opened files, cipher alphabet
-    // and selected mode to the file-processing function
     crypt_file(
         in_file,
         out_file,
@@ -132,14 +83,13 @@ int main(int argc, char* argv[])
         decrypt
     );
 
-
     // Close the files after encryption or decryption
     in_file.close();
     out_file.close();
 
     cout << "Operation successful." << endl;
 
-    // Return 0 because the program finished normally
+   
     return 0;
 }
 
