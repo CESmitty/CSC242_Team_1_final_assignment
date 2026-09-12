@@ -1,23 +1,19 @@
-Get the keyword
+Start program.
 
-Remove duplicate letters
+Ask user to encrypt or decrypt.
 
-Add the unused alphabet letters in reverse order
+Ask for keyword and file names.
 
-Open the input file
+Open input and output files.
 
-Open the output file
+Create cipher using the keyword.
 
-For each character in the input file
+Read each character from the input file.
 
-    If encrypting
+Encrypt or decrypt each letter.
 
-        Replace the letter using the cipher alphabet
+Write each result to the output file.
 
-    Else if decrypting
+Close both files.
 
-        Replace the letter using the normal alphabet
-
-    Write the character to the output file
-
-Close both files
+End program.
