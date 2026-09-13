@@ -1,3 +1,15 @@
+/* ---------------------------------------------------------------------------
+ I attest that this following code represents my own work and is subject to
+ the plagiarism policy found in the course syllabus.
+
+ Class:     CSC 242
+ Assignment:     Lesson #4
+ File:     Cipherproj.cpp
+ Description: This program will Encrypt and Decrypt files, choose a keyword of your choice and follow the instructions.
+ I suggest using input.txt as a test file as it is already in the directory ready to encypt
+ Author:      Clayton Smith, Christiaan Blondeeltimmerman, David Garcia
+ Date:     9/9/2026
+ ** -------------------------------------------------------------------------*/   
 #include <iostream> // for cout and cin
 #include <fstream> // allows us to open, read and write files
 #include <string> // allows us to use string variables
